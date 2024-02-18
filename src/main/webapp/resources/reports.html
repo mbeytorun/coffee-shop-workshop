@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="tr">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Kahveci Efendi - Gözlem</title>
+	<link rel="stylesheet" href="/resources/bower_components/pure/pure.css">
+    <link rel="stylesheet" href="/resources/bower_components/pure/grids-responsive.css">
+    <link rel="stylesheet" href="/resources/public/css/pure-theme.css">
+    <link rel="stylesheet" href="/resources/public/css/kahveci-efendi.css">
+    <script type="text/javascript" data-main="/resources/js/run-kahveci-efendi"
+        src="/resources/bower_components/requirejs/require.js"></script>
+</head>
+<body class="pure-skin-theme" id="kahveciEfendiApp" ng-controller="OrderCtrl">
+
+<div class="please-wait-dialog" ng-hide="vm.appReady">
+    <img class="please-wait-spinner" src="/resources/img/loading.gif">
+</div>
+
+<header class="page-header pure-g not-ready" ng-class="{'app-ready': vm.appReady}">
+    <div class="pure-u-lg-1-2 pure-u-1">
+
+        <a class="pure-menu-heading" href="#">
+            <img class="logo" src="/resources/img/logo.png">
+        </a>
+        <span class="header-element page-title">Kahveci Efendi</span>
+
+    </div>
+     <div class="pure-u-lg-1-2 pure-u-1 utilities">
+        <div class="header-element username">
+            <div class="username-placeholder" ng-hide="vm.userName"></div>
+            <span ng-cloak>{{vm.userName}}</span>
+        </div>
+        <div class="header-element">
+       	    <a class="logout" href="order.html">Sipariş</a>
+            <a class="logout" href="#" ng-click="logout()">Çıkış</a>
+        </div>
+    </div>
+
+</header>
+
+<main class="container not-ready" ng-class="{'app-ready': vm.appReady}" ng-cloak>
+
+    <error-messages></error-messages>
+
+    <div class="info-messages"
+         ng-style="{'opacity': vm.infoMessages.length > 0 ? 1 : 0, 'z-index': vm.infoMessages.length > 0 ? 10 : -10}">
+    <img class="info-icon" src="/resources/img/info-icon.png">
+        <div class="messages-group">
+            <div ng-repeat="info in vm.infoMessages">{{info.description}}</div>
+        </div>
+    </div>
+    
+	<div style="padding-top:10px; padding-bottom:10px">Rapor seçiniz:</div>
+	
+	<select ng-model="vm.reportType" ng-change="comboChange()">
+	  <option value="" >Seçiniz</option>
+	  <option value="userTotals">Kullanıcı Bazında Sipariş Toplamları</option>
+	  <option value="beverageTotals" >İçecek Türü Bazında Toplamlar</option>
+	</select>
+	
+	<div class="form-separator"></div>
+	
+	<table ng-show="vm.reportType === 'userTotals'">
+	<thead>
+		<tr>
+			<th>Kullanıcı ID</th>
+			<th>Kullanıcı Adı</th>
+			<th>Toplam Tutar</th>
+			<th>Toplam Ödenen</th>
+			<th>Sipariş Adedi</th>
+		</tr>
+	</thead>
+		<tr ng-repeat="field in vm.reportFields">
+      	
+      		<td ng-repeat="item in field.fields track by $index">{{item}}</td>
+      	</tr>
+    </table>
+    
+    <table ng-show="vm.reportType === 'beverageTotals'">
+	<thead>
+		<tr>
+			<th>İçecek ID</th>
+			<th>İçecek Adı</th>
+			<th>Toplam Adet</th>
+			<th>Toplam Tutar</th>
+		</tr>
+	</thead>
+		<tr ng-repeat="field in vm.reportFields">
+      	
+      		<td ng-repeat="item in field.fields track by $index">{{item}}</td>
+      	</tr>
+    </table>
+
+</main>
+
+</body>
+</html>
